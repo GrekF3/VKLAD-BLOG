@@ -4,6 +4,9 @@ from django.dispatch import receiver
 from django.core.files.storage import default_storage
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django.utils.html import strip_tags
+import re
+
 
 
 class BlogPost(models.Model):
@@ -17,6 +20,19 @@ class BlogPost(models.Model):
     publication_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
 
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    reading_time_minutes = models.IntegerField(verbose_name="Время чтения (минуты)", null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Рассчитываем время чтения только при создании нового поста
+            post_content = strip_tags(self.content)
+            words = re.findall(r'\w+', post_content)
+            word_count = len(words)
+            average_reading_speed = 225  # Пример средней скорости чтения (слов в минуту)
+            reading_time_minutes = word_count / average_reading_speed
+            self.reading_time_minutes = int(reading_time_minutes)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
