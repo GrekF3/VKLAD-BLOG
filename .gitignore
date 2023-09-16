@@ -151,7 +151,11 @@ venv.bak/
 /site
 documentaion
 /documentaion
-C:\projects\Blog\documentaion
+.documentaion
+documentaion/
+/documentaion/
+.documentaion/
+
 
 # mypy
 .mypy_cache/

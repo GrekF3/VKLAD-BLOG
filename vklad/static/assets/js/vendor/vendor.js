@@ -383,6 +383,8 @@ SOFTWARE.
             }
         }
         // Set Click
+
+
         $('#my_switcher .setColor').on('click', function() {
             $(this).closest('ul').find('li').siblings().find('.active').removeClass('active');
             $(this).addClass('active');
