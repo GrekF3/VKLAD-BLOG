@@ -864,10 +864,12 @@
                 <div class="row">
                     <div class="col-xl-6 col-md-12 col-12">
                         <!-- Start Post Grid  -->
+                        {% for post in posts_list %}
+                        {% if forloop.counter == 1 %}
                         <div class="content-block post-grid post-grid-transparent">
                             <div class="post-thumbnail">
-                                <a href="post-details.html">
-                                    <img src="{% static "assets/images/post-images/post-tect-01.jpg" %}" alt="Post Images">
+                                <a href="{{ post.slug }}">
+                                    <img src="{{ post.image.url }}" alt="Post Images">
                                 </a>
                             </div>
                             <div class="post-grid-content">
@@ -881,10 +883,12 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <h3 class="title"><a href="post-details.html">Красота глубоко космоса. Миллионы галлактик на ладони</a></h3>
+                                    <h3 class="title"><a href="blog/{{ post.slug }}">{{ post.title }}</a></h3>
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
+                        {% endfor %}
                         <!-- Start Post Grid  -->
                     </div>
 

@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from django.utils.html import strip_tags
 import re
+from PIL import Image
 
 
 
@@ -24,6 +25,12 @@ class BlogPost(models.Model):
     reading_time_minutes = models.IntegerField(verbose_name="Время чтения (минуты)", null=True, blank=True)
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        image = Image.open(self.image.path)
+        new_size = (600, 600)
+        image.thumbnail(new_size)
+        image.save(self.image.path)
+
         if not self.id:
             # Рассчитываем время чтения только при создании нового поста
             post_content = strip_tags(self.content)
@@ -32,7 +39,8 @@ class BlogPost(models.Model):
             average_reading_speed = 225  # Пример средней скорости чтения (слов в минуту)
             reading_time_minutes = word_count / average_reading_speed
             self.reading_time_minutes = int(reading_time_minutes)
-        super().save(*args, **kwargs)
+
+
 
     def __str__(self):
         return self.title
@@ -53,6 +61,7 @@ class Tag(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название категории")
+    category_image = models.ImageField(upload_to='CategoriesImages/', verbose_name='Картинка категории', help_text='540x540')
 
     def __str__(self):
         return self.name
