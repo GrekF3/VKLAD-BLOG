@@ -61,7 +61,12 @@ class Tag(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название категории")
-    category_image = models.ImageField(upload_to='CategoriesImages/', verbose_name='Картинка категории', help_text='540x540')
+    category_image = models.ImageField(
+        upload_to='CategoriesImages/',
+        verbose_name='Картинка категории',
+        help_text='540x540',
+        default='CategoriesImages/empty.jpg'
+    )
 
     def __str__(self):
         return self.name
