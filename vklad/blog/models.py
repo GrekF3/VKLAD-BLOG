@@ -67,6 +67,7 @@ class Category(models.Model):
         help_text='540x540',
         default='CategoriesImages/empty.jpg'
     )
+    slug = models.SlugField(unique=True, verbose_name="Слаг", blank=True, null=True)
 
     def __str__(self):
         return self.name
